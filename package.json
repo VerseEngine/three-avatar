@@ -1,0 +1,49 @@
+{
+  "name": "three-avatar",
+  "version": "1.0.0",
+  "description": "Avatar system for three.js",
+  "main": "dist/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/esm/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/VerseEngine/three-avatar"
+  },
+  "scripts": {
+    "example": "npm run build && npx http-server -p 8080",
+    "clean": "rimraf dist *.clean **/*.clean",
+    "prepare": "npm run build",
+    "prebuild": "rimraf dist",
+    "build": "run-p build:*",
+    "build:common": "esbuild --format=iife --sourcemap src/index.ts --tsconfig=tsconfig.json --bundle --packages=external --outfile=dist/index.js",
+    "build:esm": "esbuild --format=esm --sourcemap src/index.ts --tsconfig=tsconfig.json --bundle --packages=external --outfile=dist/esm/index.js",
+    "build:types": "tsc --emitDeclarationOnly --declaration --declarationDir dist/esm",
+    "postbuild": "npx api-extractor run --local --verbose && npx api-documenter markdown -i dist/temp/ -o ./docs",
+    "lint": "tsc --noEmit && npx eslint .",
+    "check-update": "ncu"
+  },
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "@microsoft/api-documenter": "^7.21.5",
+    "@microsoft/api-extractor": "^7.34.4",
+    "@types/three": ">=0.146.0",
+    "@typescript-eslint/eslint-plugin": "^5.52.0",
+    "@typescript-eslint/parser": "^5.52.0",
+    "@verseengine/three-move-controller": "git+ssh://git@github.com.verseengine:VerseEngine/three-move-controller.git",
+    "@verseengine/three-touch-controller": "git+ssh://git@github.com.verseengine:VerseEngine/three-touch-controller.git",
+    "@verseengine/three-xr-controller": "git+ssh://git@github.com.verseengine:VerseEngine/three-xr-controller.git",
+    "esbuild": "^0.17.8",
+    "eslint": "^8.34.0",
+    "eslint-plugin-tsdoc": "^0.2.17",
+    "npm-check-updates": "^16.7.4",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^4.1.2",
+    "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "@pixiv/three-vrm": "1",
+    "three": ">=0.146.0"
+  }
+}

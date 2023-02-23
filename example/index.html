@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <meta name="referrer" content="no-referrer" />
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+      #controls {
+        position: absolute;
+        left: 100px;
+        z-index: 1;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        column-gap: 1rem;
+      }
+      #controls * {
+        font-size: 0.8rem;
+      }
+      #controls label {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
+    </style>
+    <script
+      async
+      src="https://cdn.jsdelivr.net/npm/es-module-shims@1.6.2/dist/es-module-shims.min.js"
+    ></script>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.module.js",
+          "three/examples/jsm/": "https://cdn.jsdelivr.net/npm/three@0.149.0/examples/jsm/",
+          "@pixiv/three-vrm": "https://cdn.jsdelivr.net/npm/@pixiv/three-vrm@1.0.8/lib/three-vrm.module.min.js",
+          "three-avatar": "../dist/esm/index.js",
+          "@verseengine/three-touch-controller": "../node_modules/@verseengine/three-touch-controller/dist/esm/index.js",
+          "@verseengine/three-move-controller": "../node_modules/@verseengine/three-move-controller/dist/esm/index.js",
+          "@verseengine/three-xr-controller": "../node_modules/@verseengine/three-xr-controller/dist/esm/index.js",
+          "./setup": "./setup.js",
+          "./world": "./world.js",
+          "./main": "./main.js",
+          "./player-controller": "./player-controller.js"
+        }
+      }
+    </script>
+    <script type="module">
+      import { main } from "./main";
+      import { createWorldObjects } from "./world";
+      import * as THREE from "three";
+
+      const AVATARS = [
+        "asset/avatar-example/vrm-v1.vrm",
+        "asset/avatar-example/vrm-v0.vrm",
+        "asset/avatar-example/rpm.glb",
+      ];
+      const ANIMATION_MAP = {
+        idle: "asset/animation/idle.fbx",
+        walk: "asset/animation/walk.fbx",
+        dance: "asset/animation/Breakdance Uprock Var 1.fbx",
+      };
+
+      function setupGUI(ctx) {
+        const onSelect = (el, cb) => {
+          el.addEventListener("change", (e) => {
+            cb(e.target.value);
+          });
+        };
+        const onCheck = (el, cb) => {
+          el.addEventListener("change", (e) => {
+            cb(e.target.checked);
+          });
+        };
+        {
+          const select = document.querySelector("#avatars");
+          onSelect(select, (v) => ctx.changeAvatar(v, ANIMATION_MAP));
+          for (const v of AVATARS) {
+            const a = v.split("/");
+            const o = document.createElement("option");
+            o.value = v;
+            o.innerText = a[a.length - 1];
+            select.appendChild(o);
+          }
+        }
+        {
+          const select = document.querySelector("#animations");
+          onSelect(select, (v) => ctx.getAvatar().playClip(v));
+          for (const v of Object.keys(ANIMATION_MAP)) {
+            const o = document.createElement("option");
+            o.value = v;
+            o.innerText = v;
+            select.appendChild(o);
+          }
+        }
+        onCheck(document.querySelector("#lipsync"), ctx.setLipsyncEnabled);
+        onCheck(document.querySelector("#ik"), ctx.setTestIKEnabled);
+        onCheck(document.querySelector("#lowspec"), ctx.setLowSpecMode);
+        onCheck(document.querySelector("#fps"), ctx.setFPSMode);
+        onCheck(document.querySelector("#mirror"), ctx.showMirrorHUD);
+      }
+
+      const ctx = main(async () => {
+        await ctx.changeAvatar(AVATARS[0], ANIMATION_MAP);
+      });
+
+      createWorldObjects(ctx);
+      setupGUI(ctx);
+
+      let helpers = [];
+      [...ctx.collisionObjects, ...ctx.teleportTargetObjects].map((el) => {
+        el.traverse((c) => {
+          if (!c.isMesh) {
+            return;
+          }
+          const box = new THREE.BoxHelper(c);
+          ctx.scene.add(box);
+          helpers.push(box);
+        });
+      });
+      setInterval(() => {
+        helpers.forEach((box) => box.update());
+      }, 1000 / 30);
+    </script>
+  </head>
+  <body>
+    <div id="controls">
+      <select id="avatars"></select>
+      <select id="animations"></select>
+      <label>LipSync<input id="lipsync" type="checkbox" /></label>
+      <label>IK<input id="ik" type="checkbox" /></label>
+      <label>Low spec mode<input id="lowspec" type="checkbox" /></label>
+      <label>TPS/FPS<input id="fps" type="checkbox" /></label>
+      <label>Mirror<input id="mirror" type="checkbox" /></label>
+    </div>
+  </body>
+</html>
