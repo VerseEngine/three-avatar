@@ -52,7 +52,7 @@ export { SimpleBoundingBoxCollider } from "./ext/simple-bounding-box-collider";
 export { Lipsync } from "./external/threelipsync-mod/threelipsync";
 
 import type * as THREE from "three";
-import { Avatar } from "./avatar";
+import { Avatar, AvatarOptions } from "./avatar";
 import { loadAvatarModel, DecordersOptions } from "./loader";
 import { Blinker } from "./ext/blinker";
 import { AutoWalker } from "./ext/auto-walker";
@@ -71,7 +71,8 @@ import {
 
 export interface CreateAvatarOptions
   extends DecordersOptions,
-    CollisionOptions {
+    CollisionOptions,
+    AvatarOptions {
   /**
    *  Not displayed with a first-person camera. ( But it will be shown in mirrors, etc.).
    */
@@ -137,7 +138,7 @@ export async function createAvatar(
     frustumCulled,
     options
   );
-  const res = new Avatar(model);
+  const res = new Avatar(model, options);
   if (options?.isInvisibleFirstPerson) {
     res.invisibleFirstPerson();
   }
