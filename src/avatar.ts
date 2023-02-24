@@ -37,6 +37,7 @@ export const AvatarTypeVrmV1: AvatarType = "VrmV1";
  */
 export const AvatarTypeReadyPlayerMe: AvatarType = "ReadyPlayerMe";
 const DEFAULT_VRM_INTERVAL_SEC = 1 / 30; // 30fps
+const DEFAULT_ANIMATION_INTERVAL_SEC = 1 / 60; // 60fps
 
 class Tmps {
   tmpEuler: THREE.Euler;
@@ -51,6 +52,10 @@ export interface AvatarOptions {
    * Processing frequency of vrm.update(). Default is 1 / 30 (30fps).
    */
   vrmIntervalSec?: number;
+  /**
+   * Processing frequency of THREE.AnimationMixer.update(). Default is 1 / 60 (60fps).
+   */
+  animationIntervalSec?: number;
   /**
    * {@link https://threejs.org/docs/#api/en/core/Layers | Layer number } to be displayed only for first-person camera. (Layer numbers that you do not want displayed on mirrors, etc.)
    */
@@ -108,6 +113,9 @@ export class Avatar {
   private _vrmIntervalSec = 0;
   private _vrmSec = 0;
 
+  private _animationIntervalSec = 0;
+  private _animationSec = 0;
+
   /**
    * @param model - Avatar Model.
    * @param  vrm - VRM Data
@@ -120,6 +128,10 @@ export class Avatar {
       options?.vrmIntervalSec || options?.vrmIntervalSec === 0
         ? options.vrmIntervalSec
         : DEFAULT_VRM_INTERVAL_SEC;
+    this._animationIntervalSec =
+      options?.animationIntervalSec || options?.animationIntervalSec === 0
+        ? options.animationIntervalSec
+        : DEFAULT_ANIMATION_INTERVAL_SEC;
 
     this._firstPersonOnlyLayer =
       options?.firstPersonOnlyLayer ||
@@ -317,8 +329,12 @@ export class Avatar {
     for (const ext of this._extensions) {
       ext.tick(deltaTime);
     }
-    if (this._activeAction) {
-      this._mixer?.update(deltaTime);
+    this._animationSec += deltaTime;
+    if (this._animationSec >= this._animationIntervalSec) {
+      if (this._activeAction) {
+        this._mixer?.update(this._animationSec);
+      }
+      this._animationSec = 0;
     }
   }
 
