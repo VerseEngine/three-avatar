@@ -88,7 +88,6 @@ export class SimpleRaycastCollider implements AvatarExtension {
       return;
     }
     const orig = this._origin!;
-    orig.updateMatrixWorld();
     const origPos = this._tmpVec0!;
     origPos.setFromMatrixPosition(orig.matrixWorld);
 

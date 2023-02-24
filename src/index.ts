@@ -141,6 +141,7 @@ export async function createAvatar(
   if (options?.isInvisibleFirstPerson) {
     res.invisibleFirstPerson();
   }
+  res.object3D.updateMatrixWorld();
   setDefaultExtensions(res, moveTarget, options);
   if (options?.isLowSpecMode) {
     if (res.vrm) {

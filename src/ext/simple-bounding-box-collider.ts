@@ -163,9 +163,7 @@ export class SimpleBoundingBoxCollider implements AvatarExtension {
     this._lastZ = targetPos.z;
   }
   private _getTargetBox(origin: THREE.Object3D): [THREE.Box3, THREE.Box3] {
-    const orig = origin;
-    orig.updateMatrixWorld();
-    const origPos = _tmps.vec.setFromMatrixPosition(orig.matrixWorld);
+    const origPos = _tmps.vec.setFromMatrixPosition(origin.matrixWorld);
     const targetBox = _tmps.box;
     targetBox.min.set(
       origPos.x - this._halfWidthX,
