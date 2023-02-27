@@ -7,9 +7,9 @@
 **Signature:**
 
 ```typescript
-export interface CreateAvatarOptions extends DecordersOptions, CollisionOptions 
+export interface CreateAvatarOptions extends DecordersOptions, CollisionOptions, AvatarOptions 
 ```
-**Extends:** [DecordersOptions](./three-avatar.decordersoptions.md)<!-- -->, [CollisionOptions](./three-avatar.collisionoptions.md)
+**Extends:** [DecordersOptions](./three-avatar.decordersoptions.md)<!-- -->, [CollisionOptions](./three-avatar.collisionoptions.md)<!-- -->, [AvatarOptions](./three-avatar.avataroptions.md)
 
 ## Properties
 
