@@ -36,8 +36,10 @@ export const AvatarTypeVrmV1: AvatarType = "VrmV1";
  * {@link https://readyplayer.me/ | Ready Player Me} | Avatar Data Types
  */
 export const AvatarTypeReadyPlayerMe: AvatarType = "ReadyPlayerMe";
-const DEFAULT_VRM_INTERVAL_SEC = 1 / 30; // 30fps
 const DEFAULT_ANIMATION_INTERVAL_SEC = 1 / 60; // 60fps
+
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+const EMPTY_FUNC = () => {};
 
 class Tmps {
   tmpEuler: THREE.Euler;
@@ -48,10 +50,6 @@ class Tmps {
 let _tmps: Tmps;
 
 export interface AvatarOptions {
-  /**
-   * Processing frequency of vrm.update(). Default is 1 / 30 (30fps).
-   */
-  vrmIntervalSec?: number;
   /**
    * Processing frequency of THREE.AnimationMixer.update(). Default is 1 / 60 (60fps).
    */
@@ -110,11 +108,10 @@ export class Avatar {
   private _thirdPersonOnlyLayer: number;
   private _syncTargetBones: THREE.Bone[];
 
-  private _vrmIntervalSec = 0;
-  private _vrmSec = 0;
-
   private _animationIntervalSec = 0;
   private _animationSec = 0;
+
+  private _skeletonUpdates: Array<() => void> = [];
 
   /**
    * @param model - Avatar Model.
@@ -124,10 +121,6 @@ export class Avatar {
     if (!_tmps) {
       _tmps = new Tmps();
     }
-    this._vrmIntervalSec =
-      options?.vrmIntervalSec || options?.vrmIntervalSec === 0
-        ? options.vrmIntervalSec
-        : DEFAULT_VRM_INTERVAL_SEC;
     this._animationIntervalSec =
       options?.animationIntervalSec || options?.animationIntervalSec === 0
         ? options.animationIntervalSec
@@ -213,6 +206,8 @@ export class Avatar {
       ...(this.ikTargetLeftArmBones.filter((v) => !!v) as THREE.Bone[]),
       ...(this.ikTargetRightArmBones.filter((v) => !!v) as THREE.Bone[]),
     ];
+
+    this._updateThrottleSkeletonUpdate();
   }
   /**
    * Object3D of this avatar.
@@ -320,12 +315,6 @@ export class Avatar {
   tick(
     deltaTime: number // THREE.Clock.getDelta()
   ) {
-    this._vrmSec += deltaTime;
-    if (this._vrmSec >= this._vrmIntervalSec) {
-      this._vrm?.update(this._vrmSec);
-      this._vrmSec = 0;
-    }
-
     for (const ext of this._extensions) {
       ext.tick(deltaTime);
     }
@@ -334,6 +323,11 @@ export class Avatar {
       if (this._activeAction) {
         this._mixer?.update(this._animationSec);
       }
+      for (const v of this._skeletonUpdates) {
+        v();
+      }
+      this._vrm?.update(this._animationSec);
+
       this._animationSec = 0;
     }
   }
@@ -638,7 +632,6 @@ renderer.setAnimationLoop(() => {
    * Switching the camera display to third-person view.
    */
   setThirdPersonMode(cameras: Array<THREE.Camera>) {
-    this._setupFirstPerson();
     for (const camera of cameras) {
       camera.layers.disable(this._firstPersonOnlyLayer);
       camera.layers.enable(this._thirdPersonOnlyLayer);
@@ -660,7 +653,7 @@ renderer.setAnimationLoop(() => {
         }
       }
     } else {
-      // firstPerson設定がされていないVRMもある
+      // Some VRMs do not have firstPerson settings.
       if (
         this._vrm.firstPerson?.meshAnnotations &&
         this._vrm.firstPerson.meshAnnotations.filter((v) => v.type === "both")
@@ -672,10 +665,11 @@ renderer.setAnimationLoop(() => {
         firstPersonOnlyLayer: this._firstPersonOnlyLayer,
         thirdPersonOnlyLayer: this._thirdPersonOnlyLayer,
       });
+      if (this._isInvisibleFirstPerson) {
+        this._invisibleFirstPerson();
+      }
     }
-    if (this._isInvisibleFirstPerson) {
-      this._invisibleFirstPerson();
-    }
+    this._updateThrottleSkeletonUpdate();
   }
   /**
    * Head bone
@@ -809,5 +803,24 @@ function onReceive(data) {
     e.x *= -1;
     e.z *= -1;
     return e;
+  }
+
+  private _updateThrottleSkeletonUpdate() {
+    if (this._animationIntervalSec === 0) {
+      return;
+    }
+    this.object3D.traverse(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (v: any) => {
+        if (!v.isSkinnedMesh) {
+          return;
+        }
+        if (v.skeleton.update === EMPTY_FUNC) {
+          return;
+        }
+        this._skeletonUpdates.push(v.skeleton.update.bind(v.skeleton));
+        v.skeleton.update = EMPTY_FUNC;
+      }
+    );
   }
 }

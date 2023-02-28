@@ -17,5 +17,4 @@ export interface AvatarOptions
 |  [animationIntervalSec?](./three-avatar.avataroptions.animationintervalsec.md) |  | number | _(Optional)_ Processing frequency of THREE.AnimationMixer.update(). Default is 1 / 60 (60fps). |
 |  [firstPersonOnlyLayer?](./three-avatar.avataroptions.firstpersononlylayer.md) |  | number | _(Optional)_ [Layer number](https://threejs.org/docs/#api/en/core/Layers) to be displayed only for first-person camera. (Layer numbers that you do not want displayed on mirrors, etc.) |
 |  [thirdPersonOnlyLayer?](./three-avatar.avataroptions.thirdpersononlylayer.md) |  | number | _(Optional)_ [Layer number](https://threejs.org/docs/#api/en/core/Layers) to be displayed only for 3rd-person camera. |
-|  [vrmIntervalSec?](./three-avatar.avataroptions.vrmintervalsec.md) |  | number | _(Optional)_ Processing frequency of vrm.update(). Default is 1 / 30 (30fps). |
 

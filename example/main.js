@@ -84,6 +84,7 @@ export const main = (initialLoad /* :?()=>Promise<void>*/) => {
       isLowSpecMode = enabled;
       if (lastUrl) {
         return changeAvatar(
+          camera,
           lastUrl,
           lastAnimationMap,
           playerObj,
@@ -96,6 +97,7 @@ export const main = (initialLoad /* :?()=>Promise<void>*/) => {
       lastUrl = url;
       lastAnimationMap = animationMap;
       return changeAvatar(
+        camera,
         url,
         animationMap,
         playerObj,
@@ -136,6 +138,7 @@ export const main = (initialLoad /* :?()=>Promise<void>*/) => {
 };
 
 const changeAvatar = async (
+  camera,
   url,
   animationMap,
   playerObj,
@@ -169,6 +172,14 @@ const changeAvatar = async (
   window._avatar = _avatar;
   _avatar.object3D.name = "myAvatar";
   playerObj.add(_avatar.object3D);
+
+  if (renderer.xr.isPresenting) {
+    const getCameras = () =>
+      [camera, renderer.xr?.getCamera()].filter((v) => !!v);
+    _avatar.setFirstPersonMode(getCameras());
+  } else {
+    updateNonVrCameraMode(_isFPS, _avatar, camera);
+  }
 };
 
 const setupVR = ({ camera, renderer }, playerController) => {

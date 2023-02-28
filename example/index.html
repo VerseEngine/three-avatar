@@ -78,7 +78,10 @@
         };
         {
           const select = document.querySelector("#avatars");
-          onSelect(select, (v) => ctx.changeAvatar(v, ANIMATION_MAP));
+          onSelect(select, (v) => {
+            document.querySelector("#animations").value = "idle";
+            ctx.changeAvatar(v, ANIMATION_MAP);
+          });
           for (const v of AVATARS) {
             const a = v.split("/");
             const o = document.createElement("option");
