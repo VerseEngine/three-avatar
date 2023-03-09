@@ -130,32 +130,40 @@ export class SimpleBoundingBoxCollider implements AvatarExtension {
         if (box.max.y === targetBox.min.y) {
           // ground
         } else {
-          let dirX = 0;
-          let dirZ = 0;
-
-          if (box.max.x >= targetBox.min.x && box.max.x < targetBox.max.x) {
-            dirX = 1;
-          } else if (
-            targetBox.max.x >= box.min.x &&
-            targetBox.max.x < box.max.x
-          ) {
-            dirX = -1;
-          }
-          if (box.max.z >= targetBox.min.z && box.max.z < targetBox.max.z) {
-            dirZ = 1;
-          } else if (
-            targetBox.max.z >= box.min.z &&
-            targetBox.max.z < box.max.z
-          ) {
-            dirZ = -1;
-          }
-          if (dirX !== 0 || dirZ !== 0) {
-            if (this._lastX !== undefined && this._lastZ !== undefined) {
+          if (this._lastX !== undefined && this._lastZ !== undefined) {
+            if (
+              this._lastX > targetPos.x &&
+              (box.max.x <= targetBox.min.x ||
+                Math.abs(targetBox.min.x - box.max.x) <
+                  Math.abs(targetBox.max.x - box.max.x))
+            ) {
               targetPos.x = this._lastX;
+            } else if (
+              this._lastX < targetPos.x &&
+              (box.min.x >= targetBox.max.x ||
+                Math.abs(targetBox.max.x - box.min.x) <
+                  Math.abs(targetBox.min.x - box.min.x))
+            ) {
+              targetPos.x = this._lastX;
+            }
+
+            if (
+              this._lastZ > targetPos.z &&
+              (box.max.z <= targetBox.min.z ||
+                Math.abs(targetBox.min.z - box.max.z) <
+                  Math.abs(targetBox.max.z - box.max.z))
+            ) {
+              targetPos.z = this._lastZ;
+            } else if (
+              this._lastZ < targetPos.z &&
+              (box.min.z >= targetBox.max.z ||
+                Math.abs(targetBox.max.z - box.min.z) <
+                  Math.abs(targetBox.min.z - box.min.z))
+            ) {
               targetPos.z = this._lastZ;
             }
-            return;
           }
+          return;
         }
       }
     }

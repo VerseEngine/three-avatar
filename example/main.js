@@ -58,10 +58,8 @@ export const main = (initialLoad /* :?()=>Promise<void>*/) => {
   if (!initialLoad) {
     setupVR(ctx, playerController);
   } else {
-    ctx.vrButton.style.visibility = "hidden";
     setTimeout(async () => {
       await initialLoad();
-      ctx.vrButton.style.visibility = "visible";
       setupVR(ctx, playerController);
     });
   }

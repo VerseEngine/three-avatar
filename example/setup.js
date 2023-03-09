@@ -27,7 +27,7 @@ export function setupScene(
   });
 
   const camera = new THREE.PerspectiveCamera(
-    80,
+    60,
     window.innerWidth / window.innerHeight,
     0.1,
     100
@@ -41,17 +41,20 @@ export function setupScene(
   {
     const light = new THREE.AmbientLight(0xffffff, 0.2);
     scene.add(light);
+    staticize(light);
   }
   {
     const light = new THREE.DirectionalLight(0xffffff, 0.8);
     light.position.set(0, 10, -10).normalize();
     scene.add(light);
+    staticize(light);
   }
   {
     const sky = new Sky();
     sky.name = "sky";
     sky.scale.setScalar(450000);
     scene.add(sky);
+    staticize(sky);
 
     const uniforms = sky.material.uniforms;
     const phi = THREE.MathUtils.degToRad(90 - 30);
@@ -73,10 +76,12 @@ export function setupScene(
     ground.name = "ground";
     ground.rotation.x = Math.PI / -2;
     scene.add(ground);
+    staticize(ground);
   }
   {
     const gridHelper = new THREE.GridHelper(50, 50);
     scene.add(gridHelper);
+    staticize(gridHelper);
   }
 
   let stats;
@@ -117,17 +122,23 @@ export function setupScene(
   let vrButton = undefined;
   if (withVR) {
     if ("xr" in navigator) {
-      renderer.xr.enabled = true;
+      navigator.xr
+        .isSessionSupported("immersive-vr")
+        .then(function (supported) {
+          if (supported) {
+            renderer.xr.enabled = true;
 
-      document.addEventListener("keydown", function (e) {
-        if (e.key === "Escape") {
-          if (renderer.xr.isPresenting) {
-            renderer.xr.getSession()?.end();
+            document.addEventListener("keydown", function (e) {
+              if (e.key === "Escape") {
+                if (renderer.xr.isPresenting) {
+                  renderer.xr.getSession()?.end();
+                }
+              }
+            });
+            vrButton = VRButton.createButton(renderer);
+            document.body.appendChild(vrButton);
           }
-        }
-      });
-      vrButton = VRButton.createButton(renderer);
-      document.body.appendChild(vrButton);
+        });
     } else {
       if (window.isSecureContext === false) {
         console.warn("webxr needs https");
@@ -265,4 +276,11 @@ export function getRenderInfo() {
   } catch (ex) {
     console.warn(ex);
   }
+}
+
+function staticize(o) {
+  o.matrixAutoUpdate = false;
+  o.matrixWorldAutoUpdate = false;
+  o.updateMatrix();
+  o.updateMatrixWorld();
 }
