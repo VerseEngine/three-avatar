@@ -18,16 +18,19 @@ export class PlayerController {
     scene /* :THREE.Scene */,
     renderer /* :THREE.WebGLRenderer */,
     camera /* :THREE.Camera */,
-    xrControllerOptions
+    controllerOptions
   ) {
     this._enabled = true;
     this._isVR = false;
-    this.touchController = new TouchController(moveTarget);
+    this.touchController = new TouchController(moveTarget, {
+      moveTo: controllerOptions?.moveTo,
+    });
     this.moveController = new MoveController(
       moveTarget,
       moveTarget,
       headRotationTarget,
       {
+        moveTo: controllerOptions?.moveTo,
         minVerticalRotation: 1.2,
         maxVerticalRotation: 2.2,
       }
@@ -39,7 +42,7 @@ export class PlayerController {
       handContainer,
       moveTarget,
       moveTarget,
-      xrControllerOptions
+      controllerOptions
     );
     this.isVR = renderer.xr.isPresenting;
   }

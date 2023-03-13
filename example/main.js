@@ -8,16 +8,19 @@ import {
   setNonVRCameraMode,
   addMirrorHUD,
   Lipsync,
+  SimpleBoundingBoxCollider,
 } from "three-avatar";
 import { setupScene, createTransformControls } from "./setup";
 import { PlayerController } from "./player-controller";
 
 let _avatar;
 let _avatarIK;
+let _collisionBoxes = [];
 let _collisionObjects = [];
 let _interactableObjects = [];
 let _teleportTargetObjects = [];
 let _isFPS = false;
+let _bc;
 
 export const main = (initialLoad /* :?()=>Promise<void>*/) => {
   let lipSync;
@@ -41,6 +44,8 @@ export const main = (initialLoad /* :?()=>Promise<void>*/) => {
   playerObj.add(cameraContainer);
   scene.add(playerObj);
 
+  _bc = new SimpleBoundingBoxCollider(playerObj, () => _collisionBoxes);
+
   const playerController = new PlayerController(
     playerObj,
     cameraContainer,
@@ -49,6 +54,7 @@ export const main = (initialLoad /* :?()=>Promise<void>*/) => {
     renderer,
     camera,
     {
+      moveTo: _bc.moveTo.bind(_bc),
       getCollisionObjects: () => _collisionObjects,
       getInteractableObjects: () => _interactableObjects,
       getTeleportTargetObjects: () => _teleportTargetObjects,
@@ -149,27 +155,27 @@ const changeAvatar = async (
     await preLoadAnimationData(animationMap);
   }
 
-  const collisionBoxes = [];
-  [..._collisionObjects, ..._teleportTargetObjects].map((el) => {
-    el.traverse((c) => {
-      if (!c.isMesh) {
-        return;
-      }
-      collisionBoxes.push(new THREE.Box3().setFromObject(c));
-    });
-  });
-
   let resp = await fetch(url);
   const avatarData = new Uint8Array(await resp.arrayBuffer());
 
-  _avatar = await createAvatar(avatarData, renderer, false, playerObj, {
-    getCollisionBoxes: () => collisionBoxes,
+  _avatar = await createAvatar(avatarData, renderer, false, {
     isInvisibleFirstPerson: true,
     isLowSpecMode,
   });
   window._avatar = _avatar;
   _avatar.object3D.name = "myAvatar";
   playerObj.add(_avatar.object3D);
+
+  _bc.setup(_avatar);
+  _collisionBoxes.length = 0;
+  [..._collisionObjects, ..._teleportTargetObjects].map((el) => {
+    el.traverse((c) => {
+      if (!c.isMesh) {
+        return;
+      }
+      _collisionBoxes.push(new THREE.Box3().setFromObject(c));
+    });
+  });
 
   if (renderer.xr.isPresenting) {
     const getCameras = () =>

@@ -45,8 +45,7 @@ export {
 export type { AvatarExtension } from "./ext/avatar-extension";
 export { Blinker } from "./ext/blinker";
 export { AutoWalker } from "./ext/auto-walker";
-export { SimpleRaycastCollider } from "./ext/simple-raycast-collider";
-export { SimpleBoundingBoxCollider } from "./ext/simple-bounding-box-collider";
+export { SimpleBoundingBoxCollider } from "./collider/simple-bounding-box-collider";
 
 // @ts-ignore
 export { Lipsync } from "./external/threelipsync-mod/threelipsync";
@@ -56,8 +55,6 @@ import { Avatar, AvatarOptions } from "./avatar";
 import { loadAvatarModel, DecordersOptions } from "./loader";
 import { Blinker } from "./ext/blinker";
 import { AutoWalker } from "./ext/auto-walker";
-import { SimpleRaycastCollider } from "./ext/simple-raycast-collider";
-import { SimpleBoundingBoxCollider } from "./ext/simple-bounding-box-collider";
 import {
   AvatarIK,
   VRHandGetter,
@@ -69,10 +66,7 @@ import {
   getDefaultWristRotationOffsetSet,
 } from "./defaults";
 
-export interface CreateAvatarOptions
-  extends DecordersOptions,
-    CollisionOptions,
-    AvatarOptions {
+export interface CreateAvatarOptions extends DecordersOptions, AvatarOptions {
   /**
    *  Not displayed with a first-person camera. ( But it will be shown in mirrors, etc.).
    */
@@ -88,28 +82,13 @@ export interface CreateAvatarOptions
  *
  * @param avatarData - Data from gltf or vrm files.
  * @param frustumCulled - {@link https://threejs.org/docs/?q=Mesh#api/en/core/Object3D.frustumCulled | Object3D.frustumCulled } applied recursively.
- * @param moveTarget  - Objects to move. Specify the object that contains `Avatar.object3D`.
  *
  * @example
 ```ts
-const collisionBoxes = [];
-const updateCollisionBoxes = () => {
-  collisionBoxes.length = 0;
-  [..._collisionObjects, ..._teleportTargetObjects].map((el) => {
-    el.traverse((c) => {
-      if (!c.isMesh) {
-        return;
-      }
-      collisionBoxes.push(new THREE.Box3().setFromObject(c));
-    });
-  });
-}
-updateCollisionBoxes();
 
 let resp = await fetch(url);
 const avatarData = new Uint8Array(await resp.arrayBuffer());
-const avatar = createAvatar(avatarData, renderer, false, playerObj, {
-  getCollisionBoxes: () => collisionBoxes,
+const avatar = createAvatar(avatarData, renderer, false, {
   isInvisibleFirstPerson: true,
   isLowSpecMode: maybeLowSpecDevice,
 });
@@ -129,7 +108,6 @@ export async function createAvatar(
   avatarData: Uint8Array,
   renderer: THREE.WebGLRenderer,
   frustumCulled?: boolean,
-  moveTarget?: THREE.Object3D,
   options?: CreateAvatarOptions
 ): Promise<Avatar> {
   const model = await loadAvatarModel(
@@ -143,7 +121,7 @@ export async function createAvatar(
     res.invisibleFirstPerson();
   }
   res.object3D.updateMatrixWorld();
-  setDefaultExtensions(res, moveTarget, options);
+  setDefaultExtensions(res);
   if (options?.isLowSpecMode) {
     if (res.vrm) {
       type unsafeVrm = {
@@ -156,65 +134,12 @@ export async function createAvatar(
 }
 
 /**
- * Objects to be hit by collision detection. To determine collision, set one of `getCollisionObjects` or `getCollisionBoxes`.  `getCollisionBoxes` is recommended because it is much lighter than `getCollisionObjects`, although it is less ambiguous.
-*
-* @example
-```ts
-const collisionBoxes = [];
-const updateCollisionBoxes = () => {
-  collisionBoxes.length = 0;
-  [..._collisionObjects, ..._teleportTargetObjects].map((el) => {
-    el.traverse((c) => {
-      if (!c.isMesh) {
-        return;
-      }
-      collisionBoxes.push(new THREE.Box3().setFromObject(c));
-    });
-  });
-}
-updateCollisionBoxes();
-
-...
-
-{
-    getCollisionBoxes: () => collisionBoxes,
-}
-
-```
- */
-export interface CollisionOptions {
-  /**
-   * Get a list of collidable objects.
-   */
-  getCollisionObjects?: () => THREE.Object3D[] | undefined;
-  /**
-   * Get a list of bounding boxes of collisionable objects.
-   */
-  getCollisionBoxes?: () => THREE.Box3[] | undefined;
-}
-
-/**
  * Set up default extensions for {@link Avatar}
  * @param moveTarget  - Objects to move. Specify the object that contains {@link Avatar.object3D}.
  */
-export function setDefaultExtensions(
-  avatar: Avatar,
-  moveTarget?: THREE.Object3D,
-  options?: CollisionOptions
-): void {
+export function setDefaultExtensions(avatar: Avatar): void {
   avatar.addExtension(new Blinker());
   avatar.addExtension(new AutoWalker());
-  if (moveTarget) {
-    if (options?.getCollisionBoxes) {
-      avatar.addExtension(
-        new SimpleBoundingBoxCollider(moveTarget, options.getCollisionBoxes)
-      );
-    } else if (options?.getCollisionObjects) {
-      avatar.addExtension(
-        new SimpleRaycastCollider(moveTarget, options.getCollisionObjects)
-      );
-    }
-  }
 }
 
 export interface CreateAvatarIKOptions {

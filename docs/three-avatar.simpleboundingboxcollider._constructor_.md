@@ -9,9 +9,7 @@ Constructs a new instance of the `SimpleBoundingBoxCollider` class
 **Signature:**
 
 ```typescript
-constructor(moveTarget: THREE.Object3D, getBoxes: () => THREE.Box3[] | undefined, options?: {
-        intervalSec?: number;
-    });
+constructor(moveTarget: THREE.Object3D, getBoxes: () => THREE.Box3[] | undefined);
 ```
 
 ## Parameters
@@ -20,5 +18,4 @@ constructor(moveTarget: THREE.Object3D, getBoxes: () => THREE.Box3[] | undefined
 |  --- | --- | --- |
 |  moveTarget | THREE.Object3D | Objects to move. |
 |  getBoxes | () =&gt; THREE.Box3\[\] \| undefined | Get a list of bounding boxes of collisionable objects. |
-|  options | { intervalSec?: number; } | _(Optional)_ Processing frequency of tick(). Default is 1 / 30 (30fps). |
 

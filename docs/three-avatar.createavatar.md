@@ -9,7 +9,7 @@ Create [Avatar](./three-avatar.avatar.md)
 **Signature:**
 
 ```typescript
-export declare function createAvatar(avatarData: Uint8Array, renderer: THREE.WebGLRenderer, frustumCulled?: boolean, moveTarget?: THREE.Object3D, options?: CreateAvatarOptions): Promise<Avatar>;
+export declare function createAvatar(avatarData: Uint8Array, renderer: THREE.WebGLRenderer, frustumCulled?: boolean, options?: CreateAvatarOptions): Promise<Avatar>;
 ```
 
 ## Parameters
@@ -19,7 +19,6 @@ export declare function createAvatar(avatarData: Uint8Array, renderer: THREE.Web
 |  avatarData | Uint8Array | Data from gltf or vrm files. |
 |  renderer | THREE.WebGLRenderer |  |
 |  frustumCulled | boolean | _(Optional)_ [Object3D.frustumCulled](https://threejs.org/docs/?q=Mesh#api/en/core/Object3D.frustumCulled) applied recursively. |
-|  moveTarget | THREE.Object3D | _(Optional)_ Objects to move. Specify the object that contains <code>Avatar.object3D</code>. |
 |  options | [CreateAvatarOptions](./three-avatar.createavataroptions.md) | _(Optional)_ |
 
 **Returns:**
@@ -30,24 +29,10 @@ Promise&lt;[Avatar](./three-avatar.avatar.md)<!-- -->&gt;
 
 
 ```ts
-const collisionBoxes = [];
-const updateCollisionBoxes = () => {
-  collisionBoxes.length = 0;
-  [..._collisionObjects, ..._teleportTargetObjects].map((el) => {
-    el.traverse((c) => {
-      if (!c.isMesh) {
-        return;
-      }
-      collisionBoxes.push(new THREE.Box3().setFromObject(c));
-    });
-  });
-}
-updateCollisionBoxes();
 
 let resp = await fetch(url);
 const avatarData = new Uint8Array(await resp.arrayBuffer());
-const avatar = createAvatar(avatarData, renderer, false, playerObj, {
-  getCollisionBoxes: () => collisionBoxes,
+const avatar = createAvatar(avatarData, renderer, false, {
   isInvisibleFirstPerson: true,
   isLowSpecMode: maybeLowSpecDevice,
 });

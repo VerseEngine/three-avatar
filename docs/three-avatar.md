@@ -15,14 +15,13 @@ Avatar system
 |  [AvatarIK](./three-avatar.avatarik.md) | IK (Inverse Kinematics) to move the avatar's arms in sync with the XR controller's movements. (Experimental Features) |
 |  [Blinker](./three-avatar.blinker.md) | Avatar extension to implement blink. |
 |  [SimpleBoundingBoxCollider](./three-avatar.simpleboundingboxcollider.md) | Avatar extension to determine collision using [BoundingBox](https://threejs.org/docs/?q=Box3#api/en/math/Box3.setFromObject)<!-- -->. |
-|  [SimpleRaycastCollider](./three-avatar.simpleraycastcollider.md) | Avatar extension to determine collision using [Raycaster](https://threejs.org/docs/#api/en/core/Raycaster)<!-- -->. |
 
 ## Functions
 
 |  Function | Description |
 |  --- | --- |
 |  [addMirrorHUD(avatar, container, options)](./three-avatar.addmirrorhud.md) | Create a mirror in front of the avatar. |
-|  [createAvatar(avatarData, renderer, frustumCulled, moveTarget, options)](./three-avatar.createavatar.md) | Create [Avatar](./three-avatar.avatar.md) |
+|  [createAvatar(avatarData, renderer, frustumCulled, options)](./three-avatar.createavatar.md) | Create [Avatar](./three-avatar.avatar.md) |
 |  [createAvatarIK(avatar, handGetter, option)](./three-avatar.createavatarik.md) | Create [AvatarIK](./three-avatar.avatarik.md)<!-- -->. (Experimental Features) |
 |  [getDefaultRotationLimitSet(t)](./three-avatar.getdefaultrotationlimitset.md) | Default value of [RotationLimitSet](./three-avatar.rotationlimitset.md)<!-- -->. |
 |  [getDefaultWristRotationOffsetSet(t)](./three-avatar.getdefaultwristrotationoffsetset.md) | Default value of [WristRotationOffsetSet](./three-avatar.wristrotationoffsetset.md)<!-- -->. |
@@ -36,7 +35,7 @@ Avatar system
 |  [loadAvatarModel(avatarData, renderer, frustumCulled, options)](./three-avatar.loadavatarmodel.md) | Load avatar file data. |
 |  [preLoadAnimationData(source, fetchFunc)](./three-avatar.preloadanimationdata.md) | Pre-load animation data. |
 |  [registerSyncAvatarHeadAndCamera(xr, nonVrCamera, head, headOffset, getAvatar, options)](./three-avatar.registersyncavatarheadandcamera.md) | Automatically adjust camera when switching between VR and non-VR modes. |
-|  [setDefaultExtensions(avatar, moveTarget, options)](./three-avatar.setdefaultextensions.md) | Set up default extensions for [Avatar](./three-avatar.avatar.md) |
+|  [setDefaultExtensions(avatar)](./three-avatar.setdefaultextensions.md) | Set up default extensions for [Avatar](./three-avatar.avatar.md) |
 |  [setNonVRCameraMode(camera, cameraOffset, avatar, isFirstPerson)](./three-avatar.setnonvrcameramode.md) | Adjust the camera for non-VR mode. |
 
 ## Interfaces
@@ -47,7 +46,6 @@ Avatar system
 |  [AvatarExtension](./three-avatar.avatarextension.md) | Interface to extend [Avatar](./three-avatar.avatar.md)<!-- -->. |
 |  [AvatarModel](./three-avatar.avatarmodel.md) | Avatar model. |
 |  [AvatarOptions](./three-avatar.avataroptions.md) |  |
-|  [CollisionOptions](./three-avatar.collisionoptions.md) | Objects to be hit by collision detection. To determine collision, set one of <code>getCollisionObjects</code> or <code>getCollisionBoxes</code>. <code>getCollisionBoxes</code> is recommended because it is much lighter than <code>getCollisionObjects</code>, although it is less ambiguous. |
 |  [CreateAvatarIKOptions](./three-avatar.createavatarikoptions.md) |  |
 |  [CreateAvatarOptions](./three-avatar.createavataroptions.md) |  |
 

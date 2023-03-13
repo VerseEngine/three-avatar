@@ -9,7 +9,7 @@ Set up default extensions for [Avatar](./three-avatar.avatar.md)
 **Signature:**
 
 ```typescript
-export declare function setDefaultExtensions(avatar: Avatar, moveTarget?: THREE.Object3D, options?: CollisionOptions): void;
+export declare function setDefaultExtensions(avatar: Avatar): void;
 ```
 
 ## Parameters
@@ -17,8 +17,6 @@ export declare function setDefaultExtensions(avatar: Avatar, moveTarget?: THREE.
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  avatar | [Avatar](./three-avatar.avatar.md) |  |
-|  moveTarget | THREE.Object3D | _(Optional)_ Objects to move. Specify the object that contains [Avatar.object3D](./three-avatar.avatar.object3d.md)<!-- -->. |
-|  options | [CollisionOptions](./three-avatar.collisionoptions.md) | _(Optional)_ |
 
 **Returns:**
 

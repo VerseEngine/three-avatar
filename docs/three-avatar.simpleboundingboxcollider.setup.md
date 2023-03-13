@@ -4,8 +4,6 @@
 
 ## SimpleBoundingBoxCollider.setup() method
 
-initialization
-
 **Signature:**
 
 ```typescript

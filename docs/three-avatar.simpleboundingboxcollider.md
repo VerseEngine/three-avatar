@@ -9,20 +9,19 @@ Avatar extension to determine collision using [BoundingBox](https://threejs.org/
 **Signature:**
 
 ```typescript
-export declare class SimpleBoundingBoxCollider implements AvatarExtension 
+export declare class SimpleBoundingBoxCollider 
 ```
-**Implements:** [AvatarExtension](./three-avatar.avatarextension.md)
 
 ## Constructors
 
 |  Constructor | Modifiers | Description |
 |  --- | --- | --- |
-|  [(constructor)(moveTarget, getBoxes, options)](./three-avatar.simpleboundingboxcollider._constructor_.md) |  | Constructs a new instance of the <code>SimpleBoundingBoxCollider</code> class |
+|  [(constructor)(moveTarget, getBoxes)](./three-avatar.simpleboundingboxcollider._constructor_.md) |  | Constructs a new instance of the <code>SimpleBoundingBoxCollider</code> class |
 
 ## Methods
 
 |  Method | Modifiers | Description |
 |  --- | --- | --- |
-|  [setup(avatar)](./three-avatar.simpleboundingboxcollider.setup.md) |  | initialization |
-|  [tick(deltaTime)](./three-avatar.simpleboundingboxcollider.tick.md) |  | Processes called periodically |
+|  [moveTo(x, y, z)](./three-avatar.simpleboundingboxcollider.moveto.md) |  |  |
+|  [setup(avatar)](./three-avatar.simpleboundingboxcollider.setup.md) |  |  |
 
