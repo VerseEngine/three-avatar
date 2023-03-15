@@ -2,6 +2,8 @@
   "name": "three-avatar",
   "version": "1.0.0",
   "description": "Avatar system for three.js",
+  "author": "Appland, Inc",
+  "license": "MIT",
   "main": "dist/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
