@@ -1,5 +1,5 @@
 {
-  "name": "three-avatar",
+  "name": "@verseengine/three-avatar",
   "version": "1.0.0",
   "description": "Avatar system for three.js",
   "author": "Appland, Inc",
