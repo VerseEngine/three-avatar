@@ -8,5 +8,5 @@
 
 |  Package | Description |
 |  --- | --- |
-|  [three-avatar](./three-avatar.md) | Avatar system |
+|  [@verseengine/three-avatar](./three-avatar.md) | Avatar system |
 
