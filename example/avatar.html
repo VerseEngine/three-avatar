@@ -69,6 +69,7 @@
     <script type="module">
       import { setupScene } from "./setup";
       import * as THREE from "three";
+      import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
       import {
         isAnimationDataLoaded,
         preLoadAnimationData,
@@ -76,31 +77,29 @@
         isLowSpecDevice,
       } from "three-avatar";
 
-      const AVATARS = [
-        "asset/avatar-example/mochi.vrm",
-        "asset/avatar-example/iroha.vrm",
-        "asset/avatar-example/vrm-v1.vrm",
-        "asset/avatar-example/vrm-v0.vrm",
-        "asset/avatar-example/rpm.glb",
-      ];
       const ANIMATION_MAP = {
         idle: "asset/animation/idle.fbx",
         walk: "asset/animation/walk.fbx",
-        dance: "asset/animation/Breakdance Uprock Var 1.fbx",
       };
 
       const avatars = [];
+      let controls;
 
       const ctx = setupScene(
         (dt) => {
           for (const avatar of avatars) {
             avatar.tick(dt);
           }
+          controls?.update();
         },
         false,
         true
       );
-      ctx.scene.add(ctx.cameraContainer);
+      ctx.scene.add(ctx.camera);
+
+      controls = new OrbitControls(ctx.camera, ctx.renderer.domElement);
+      ctx.camera.position.set(0.0, 1.5, 5.0);
+      controls.update();
 
       const canvas = ctx.renderer.domElement;
       const startPane = document.querySelector(".start");
