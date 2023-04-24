@@ -276,7 +276,7 @@ function createIKSettings(
   const ik = {
     target: skeleton.bones.findIndex((v) => v === targetBone),
     effector: skeleton.bones.findIndex((v) => v === bones[2]),
-    iteration: 2,
+    iteration: 1,
     minAngle: -0.2,
     maxAngle: 0.2,
     links: [
@@ -313,7 +313,7 @@ class VRMapping {
   wristBone: THREE.Object3D;
   wristRotationOffset: THREE.Quaternion | undefined;
   wristBoneInitQuat: THREE.Quaternion;
-  maxDistanceSquared: number;
+  // maxDistanceSquared: number;
   maxShoulderToControllderDistanceSquared = 0;
   shoulderBone: THREE.Object3D;
 
@@ -333,9 +333,9 @@ class VRMapping {
     this.wristRotationOffset = wristRotationOffset;
     this.wristBoneInitQuat = new THREE.Quaternion().copy(wristBone.quaternion);
     this.shoulderBone = shoulderBone;
-    this.maxDistanceSquared = shoulderBone
+    /* this.maxDistanceSquared = shoulderBone
       .getWorldPosition(_tmps.vec)
-      .distanceToSquared(wristBone.getWorldPosition(_tmps.vec1));
+      .distanceToSquared(wristBone.getWorldPosition(_tmps.vec1)); */
   }
 
   mapVRAvatar() {
@@ -345,7 +345,7 @@ class VRMapping {
     }
 
     {
-      {
+      /* {
         const v = this.shoulderBone
           .getWorldPosition(_tmps.vec)
           .distanceToSquared(this.wristBone.getWorldPosition(_tmps.vec1));
@@ -374,7 +374,8 @@ class VRMapping {
             _tmps.mat.copy(this.ikTarget.parent!.matrixWorld).invert()
           )
         );
-      } else {
+      } else { */
+      {
         const controllerPos = vrHand.getWorldPosition(_tmps.vec);
         this.ikTarget.position.copy(
           controllerPos.applyMatrix4(

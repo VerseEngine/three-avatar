@@ -2,3 +2,4 @@ dist/
 node_modules/
 *.clean
 .DS_Store
+cert/

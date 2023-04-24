@@ -13,6 +13,7 @@
   },
   "scripts": {
     "example": "npm run build && npx http-server -p 8080",
+    "example-ssl": "npm run build && npx http-server -c-1 --ssl --key ./cert/localhost+2-key.pem --cert ./cert/localhost+2.pem -p 8080",
     "clean": "rimraf dist *.clean **/*.clean",
     "prepare": "npm run build",
     "prebuild": "rimraf dist",
