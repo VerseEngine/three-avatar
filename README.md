@@ -34,10 +34,11 @@ npm install @verseengine/three-move-controller @verseengine/three-touch-controll
   {
     "imports": {
       "three": "https://cdn.jsdelivr.net/npm/three@0.137.0/build/three.module.js",
-      "three-avatar": "https://cdn.jsdelivr.net/npm/@verseengine/three-avatar@1.0.0/dist/esm/index.js",
-      "@verseengine/three-touch-controller": "https://cdn.jsdelivr.net/npm/@verseengine/three-touch-controller@1.0.0/dist/esm/index.js",
-      "@verseengine/three-move-controller": "https://cdn.jsdelivr.net/npm/@verseengine/three-move-controller@1.0.0/dist/esm/index.js",
-      "@verseengine/three-xr-controller": "https://cdn.jsdelivr.net/npm/@verseengine/three-xr-controller@1.0.0/dist/esm/index.js"
+      "three-avatar": "https://cdn.jsdelivr.net/npm/@verseengine/three-avatar@1.0.1/dist/esm/index.js",
+      "@pixiv/three-vrm": "https://cdn.jsdelivr.net/npm/@pixiv/three-vrm@1.0.8/lib/three-vrm.module.min.js",
+      "@verseengine/three-touch-controller": "https://cdn.jsdelivr.net/npm/@verseengine/three-touch-controller@1.0.1/dist/esm/index.js",
+      "@verseengine/three-move-controller": "https://cdn.jsdelivr.net/npm/@verseengine/three-move-controller@1.0.1/dist/esm/index.js",
+      "@verseengine/three-xr-controller": "https://cdn.jsdelivr.net/npm/@verseengine/three-xr-controller@1.0.1/dist/esm/index.js"
     }
   }
 </script>
