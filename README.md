@@ -18,6 +18,32 @@ Avatar system for three.js.
 npm run example
 ```
 
+## Installation
+### npm
+```bash
+npm install @verseengine/three-move-controller @verseengine/three-touch-controller @verseengine/three-xr-controller @verseengine/three-avatar
+```
+
+### CDN (ES Mobules)
+```html
+<script
+      async
+      src="https://cdn.jsdelivr.net/npm/es-module-shims@1.6.2/dist/es-module-shims.min.js"
+    ></script>
+<script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.137.0/build/three.module.js",
+      "three-avatar": "https://cdn.jsdelivr.net/npm/@verseengine/three-avatar@1.0.0/dist/esm/index.js",
+      "@verseengine/three-touch-controller": "https://cdn.jsdelivr.net/npm/@verseengine/three-touch-controller@1.0.0/dist/esm/index.js",
+      "@verseengine/three-move-controller": "https://cdn.jsdelivr.net/npm/@verseengine/three-move-controller@1.0.0/dist/esm/index.js",
+      "@verseengine/three-xr-controller": "https://cdn.jsdelivr.net/npm/@verseengine/three-xr-controller@1.0.0/dist/esm/index.js"
+    }
+  }
+</script>
+```
+
+
 ## Usage
 ```javascript
 import * as THREE from "three";
