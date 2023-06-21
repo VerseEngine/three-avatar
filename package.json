@@ -11,6 +11,12 @@
     "type": "git",
     "url": "https://github.com/VerseEngine/three-avatar"
   },
+  "homepage": "https://verseengine.cloud/",
+  "keywords": [
+    "vr",
+    "3d",
+    "metaverse"
+  ],
   "scripts": {
     "example": "npm run build && npx http-server -p 8080",
     "example-ssl": "npm run build && npx http-server -c-1 --ssl --key ./cert/localhost+2-key.pem --cert ./cert/localhost+2.pem -p 8080",
