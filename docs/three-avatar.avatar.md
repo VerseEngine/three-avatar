@@ -43,7 +43,7 @@ renderer.setAnimationLoop(() => {
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
 |  [faceExpressionNames](./three-avatar.avatar.faceexpressionnames.md) | <code>readonly</code> | string\[\] | List of possible names for [Avatar.setFaceExpression()](./three-avatar.avatar.setfaceexpression.md)<!-- -->. |
-|  [faceMesh](./three-avatar.avatar.facemesh.md) | <code>readonly</code> | THREE.Mesh&lt;THREE.BufferGeometry, THREE.Material \| THREE.Material\[\]&gt; \| undefined | Mesh for changing facial expressions. |
+|  [faceMesh](./three-avatar.avatar.facemesh.md) | <code>readonly</code> | THREE.Mesh&lt;THREE.BufferGeometry&lt;THREE.NormalBufferAttributes&gt;, THREE.Material \| THREE.Material\[\]&gt; \| undefined | Mesh for changing facial expressions. |
 |  [firstPersonOnlyLayer](./three-avatar.avatar.firstpersononlylayer.md) | <code>readonly</code> | number | [Layer number](https://threejs.org/docs/#api/en/core/Layers) to be displayed only for first-person camera. (Layer numbers that you do not want displayed on mirrors, etc.) |
 |  [headBone](./three-avatar.avatar.headbone.md) | <code>readonly</code> | THREE.Bone | Head bone |
 |  [headBoneOffset](./three-avatar.avatar.headboneoffset.md) | <code>readonly</code> | THREE.Vector3 | Position offset from the head bone. |

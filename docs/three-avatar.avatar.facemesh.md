@@ -9,7 +9,7 @@ Mesh for changing facial expressions.
 **Signature:**
 
 ```typescript
-get faceMesh(): THREE.Mesh<THREE.BufferGeometry, THREE.Material | THREE.Material[]> | undefined;
+get faceMesh(): THREE.Mesh<THREE.BufferGeometry<THREE.NormalBufferAttributes>, THREE.Material | THREE.Material[]> | undefined;
 ```
 
 ## Remarks
