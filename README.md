@@ -33,9 +33,9 @@ npm install @verseengine/three-move-controller @verseengine/three-touch-controll
 <script type="importmap">
   {
     "imports": {
-      "three": "https://cdn.jsdelivr.net/npm/three@0.137.0/build/three.module.js",
-      "three-avatar": "https://cdn.jsdelivr.net/npm/@verseengine/three-avatar@1.0.1/dist/esm/index.js",
-      "@pixiv/three-vrm": "https://cdn.jsdelivr.net/npm/@pixiv/three-vrm@1.0.8/lib/three-vrm.module.min.js",
+      "three": "https://cdn.jsdelivr.net/npm/three@0.153.0/build/three.module.js",
+      "three-avatar": "https://cdn.jsdelivr.net/npm/@verseengine/three-avatar/dist/esm/index.js",
+      "@pixiv/three-vrm": "https://cdn.jsdelivr.net/npm/@pixiv/three-vrm@2/lib/three-vrm.module.min.js",
       "@verseengine/three-touch-controller": "https://cdn.jsdelivr.net/npm/@verseengine/three-touch-controller/dist/esm/index.js",
       "@verseengine/three-move-controller": "https://cdn.jsdelivr.net/npm/@verseengine/three-move-controller/dist/esm/index.js",
       "@verseengine/three-xr-controller": "https://cdn.jsdelivr.net/npm/@verseengine/three-xr-controller/dist/esm/index.js"
