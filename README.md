@@ -1,4 +1,4 @@
-# three-avatar
+# three-avatar &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/VerseEngine/three-avatar/blob/main/LICENSE)  [![npm version](https://img.shields.io/npm/v/@verseengine%2Fthree-avatar.svg?style=flat)](https://www.npmjs.com/package/@verseengine%2Fthree-avatar)  [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/VerseEngine/three-avatar/pulls)
  
 Avatar system for three.js.
 
